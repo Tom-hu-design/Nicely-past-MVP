@@ -1,0 +1,152 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+      <link href="/static/styles/Signup.css" rel="stylesheet">
+      <link rel="icon" href="/static/images/nicely.svg">
+      <meta charset="UTF-8">
+      <meta name="description" content="Mental Health Evaluation Tool. Real-time Feedback and Intervention Program, the future of mental health monitoring">
+      <meta name="keywords" content="Mental health, Mental wellbeing, Mental awareness, Telehealth, Wellbeing, Therapy, Tech, Monitoring, Depression, Anxiety, Help, Support, Counsellors">
+      <meta name="author" content="Tom Hu">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Nicely: Mental Health Evaluation Tool</title>
+  </head>
+
+  <body>
+    <div style="position: relative;overflow-x: hidden;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white container-fluid">
+          <a class="navbar-brand" href="/info" style="padding-left: 5%;">
+            <img src="/static/images/Logo2.png" width="110px" height="110px">
+          </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav" style="padding-left: 55%;">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/info">Home</a>
+            </li>
+            <li class="nav-item" style="padding-left: 50px;">
+              <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+            </li>
+            <li class="nav-item"  style="padding-left: 50px;">
+              <a class="nav-link active" aria-current="page" href="/about">About</a>
+            </li>
+            <li class="nav-item"  style="padding-left: 50px;">
+              <button class="nav-link active login-btn" aria-current="page" onclick="location.href = '/login'">Log in</button>
+            </li>
+          </ul>
+          
+        </div>
+    </nav> 
+    <!-- above is nav-bar coding block -->
+
+
+    <!-- below is background shapes coding block -->
+    <div class="info-background"> 
+      <div id="circle-blue">
+        <div class="container" style="height: 340px; width: 340px; margin-top: 20px; margin-left: 13px;">
+      <img src="/static/images/Avatar.svg" style="height: 240px; width: 240px; z-index: 2;">
+    </div></div>
+    <div id="circle-grey-1"></div>
+    <div id="circle-grey-2"></div>
+    <div id="circle-light-grey"></div>
+    <div style="background: #F3F6FF;border-radius: 50%;position: absolute;width: 300px;height: 300px;left: 253px;top: 1050px;z-index:-1;"></div>
+  </div>
+
+    <div class="container" style="padding-left: 7%; padding-right:7%; padding-bottom: 200px; padding-top: 11%;">
+      
+      <h2 class="info-headline">We care about your mental health as a social media user.</h2><br>
+      <div style="font-size:small">
+      <div>We use machine learning and data analytics to help you better monitor </div>
+      <div>the mood of your daily activities on the Internet. </div>
+        <div>We can better inform the therapist about your needs</div>
+        <div>and behavioral characteristics when you need help.</div><br></div>
+      <a href="/signup"><button class="signup-btn">Join Nicely right now  <img height="22px" src="/static/images/vector-3@2x.png"> </button></a>
+    </div>
+
+        <div class="container" style="padding-left: 12%; padding-right:5%; padding-bottom: 200px; padding-top: 5%;z-index: 2;position:absolute;">
+          <div style="font-size: 45px;font-weight: 400;">"A Real-time Feedback and Intervention Program that aims to revolutionize mental health industry"</div><br>
+          <!-- <div class="center">Click <a href="/signup" style="color: black;">here</a> to create an account and start you journey with Nicely</div> -->
+        </div>
+
+        <h1 class="why_slogan">Why Nicely?</h1>
+
+    <div id="shapes-bubbles" class="row_large">
+      <div class="col-3 circle-blue-label" style="margin: auto;margin-bottom: 50px;display: inline-block; margin-right: 12%;white-space: normal;">
+          <img src="/static/images/info_page/hourglass.svg" class="card-img-top" style="height: auto; width: 150px;">
+          <div class="card-body">
+            <h5 class="card-title">Simple</h5>
+            <div class="wrapper">
+            <p class="card-text hid" style="color: black; text-decoration: none; font-size: 12px;"> Presenting information in a clear, organized and distinct way. Minimal training is needed to use our application. </p>
+          </div>
+          </div>
+      </div>
+
+      <div class="col-3 circle-blue-label" style="margin: auto;margin-bottom: 50px;display: inline-block; margin-right: 12%;white-space: normal;">
+            <img src="/static/images/info_page/clipboard.svg" class="card-img-top" style="height: auto; width: 150px;">
+            <div class="card-body">
+              <h5 class="card-title">Data-driven</h5>
+              <div class="wrapper">
+              <p class="card-text hid" style="color: black; text-decoration: none; font-size: 12px;">Contextualizing clients' emotion states during the day, supporting counselors to make data-oriented diagnosis.</p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-3 circle-blue-label" style="margin: auto;margin-bottom: 50px;display: inline-block;white-space: normal;">
+                <img src="/static/images/info_page/people.svg" class="card-img-top" style="height: auto; width: 150px;">
+              <div class="card-body">
+                <h5 class="card-title">Cohesive</h5>
+                <div class="wrapper">
+                <p class="card-text hid" style="color: black; text-decoration: none; font-size:12px;">Providing contextual knowledge on clients' emotions, allowing providers to identify and resolve times of crisis.</p>
+              </div>
+              </div>
+      </div>
+</div>
+<footer class="bg-dark text-center text-white footer-style">
+  <div class="container p-4" style="height: 95px;">
+    <section class="mb-4">
+      <!-- Facebook -->
+      <a class="btn icon_info btn-floating m-1" href="https://www.facebook.com/people/Nicely-Tech/100088373237469/" role="button"
+        ><img src="/static/images/info_page/facebook.svg" width="14px" height="auto"></a>
+
+      <!-- Twitter -->
+      <a class="btn icon_info btn-floating m-1" style="background-color: white;" href="https://twitter.com/tech_nicely" role="button"
+        ><img src="/static/images/info_page/twitter.svg" width="14px" height="auto">
+      </a>
+
+      <!-- Google -->
+      <a class="btn icon_info btn-floating m-1" style="background-color: white;" href="https://nicely.tech" role="button"
+        ><img src="/static/images/info_page/google.svg" width="14px" height="auto">
+      </a>
+
+      <!-- Instagram -->
+      <a class="btn icon_info btn-floating m-1" style="background-color: white;" href="https://www.instagram.com/nicely_tech/" role="button"
+        ><img src="/static/images/info_page/instagram.svg" width="14px" height="auto">
+      </a>
+
+      <!-- Linkedin -->
+      <a class="btn icon_info btn-floating m-1" style="background-color: white;" href="https://www.linkedin.com/company/nicely-tech" role="button"
+        ><img src="/static/images/info_page/linkedin.svg" width="14px" height="auto">
+      </a>
+      <img style="position: absolute; margin-top: -15px; margin-left: -750px;padding: 0;" src="/static/images/Nicely-logo-3.png" width="100px" height="auto">
+      <div style="position: absolute; margin-top: -50px; margin-left: 1150px;">
+      <div style="font-size: 12px;">New York, US</div>
+      <div style="font-size: 12px;">tom_hu@nicely.tech</div>
+      <div style="font-size: 12px;">+1 289 407 5555</div>
+    </div>
+
+    </section>
+</footer>
+</div>
+  </body>
+</html>
+    

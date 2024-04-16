@@ -1,0 +1,57 @@
+<head>
+    <link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+    <link href="/static/styles/Signup.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/nicely.svg">
+    <title>Quick Check-in</title>
+    </head>
+    <body>
+    <div class="center" style="margin-top: 70px;">
+    <h3>Welcome @{{usr}}!</h3>
+
+<div class="container" style="padding-top: 20px;">
+    <h4>What emoji describes you best now?</h4>
+    <div class="row">
+        {% for emoji in emojis %}
+        <div class="col-3 fade-in-image">
+            <p id ={{emoji}} style="font-size: 100px;" onclick=clicked("{{emoji}}")>{{emoji}}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="myModal" class="modal">
+
+    <div class="modal-content text-center">
+    <form action="{{request.path}}", method="post", id="formsubmit">
+      <p>What made you feel like this today?</p>
+      <input type="hidden" name="emoji" id="emoji" value = ""/>
+      <textarea name = "entry" placeholder="What happened today?" style="width: 1000px;"></textarea><br>
+      <button href = "/dashboard" class="btn btn-primary" style="width: 80px; margin: auto;" onclick=next()>Next</button>
+    </form>
+    </div>
+
+  
+  </div>
+
+<script>
+    var emojiV 
+    function clicked(e) {
+    emojiV = e
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    }
+
+    function next() {
+    var form = document.getElementById("formsubmit");
+    const inputT = document.getElementById('emoji')
+    inputT.value = emojiV
+    form.submit()
+    }
+</script>
+
+{%- for message in get_flashed_messages() %} 
+{{ message }}<br> 
+{%- endfor%}
+</div>
+
+</body>

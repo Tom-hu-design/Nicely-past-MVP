@@ -1,0 +1,108 @@
+<head>
+    <link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+    <link href="/static/styles/Signup.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/nicely.svg">
+    <title>User labels</title>
+</head>
+
+<body style="background-color: #682cd8;">
+    <form action="/labels" method="post" id="query_arr">
+        <input type="text" id="query_field_1" name="query_int_1" style="display: none;" value="">
+        <input type="text" id="query_field_2" name="query_int_2" style="display: none;" value="">
+        <input type="text" id="query_field_3" name="query_int_3" style="display: none;" value="">
+      </form>
+    <img src="/static/images/check-in-arrow.svg" width="auto" height="40px" style="position: fixed; top: 85%; right: 5%; z-index: 2; cursor: pointer;" onclick="clickFunc()" >
+        <div id="check-in-bar"></div>
+
+    
+    <div id="question_set_1" style="display: inline;">
+    <div style="font-size: 50px; text-align: center; margin-top: 60px; color: white;margin-bottom: 30px;">How would you describe your self?</div>
+    <div class="container" style="width:90%;margin-left: 7%;">
+    {% for item in adj_dict %}
+    <div class="box-label d-inline-flex p-2" style="text-align: center;color: white;" id = "{{item}}" onclick="labelclicked(this, labels_dic_1)"><img src="/static/images/selected_label.svg" width="auto" height="15px" style="z-index: 2; height: 20px; position: absolute; margin-top: 20px; margin-left: 55px; display: none;">{{item}}</div>
+    {% endfor %}
+    </div>
+    </div>
+
+<div id="question_set_2" style="display: none;">
+<div style="font-size: 50px; text-align: center; margin-top: 60px; color: white;margin-bottom: 30px;">What are some activities you enjoy?</div>
+<div class="container" style="width:90%;margin-left: 7%;">
+{% for item in hob_dict %}
+<div id = "{{item}}" class="box-label d-inline-flex p-2" style="text-align: center;color: white;" onclick="labelclicked(this, labels_dic_2)"><img src="/static/images/selected_label.svg" width="auto" height="15px" style="z-index: 2; height: 20px; position: absolute; margin-top: 20px; margin-left: 55px; display: none;">{{item}}</div>
+{% endfor %}
+</div>
+</div>
+
+<div id="question_set_3" style="display: none;">
+<div style="font-size: 50px; text-align: center; margin-top: 60px; color: white;margin-bottom: 30px;">What are some goals you are currently pursuing?</div>
+<div class="container" style="width:90%;margin-left: 7%;">
+{% for item in goals_list %}
+<div id = "{{item}}" class="goal-label d-inline-flex p-2" style="text-align: center;color: white;" onclick="labelclicked(this, labels_dic_3)"><img src="/static/images/selected_label.svg" width="auto" height="15px" style="z-index: 2; height: 20px; position: absolute; margin-top: 20px; margin-left: 114px; display: none;">{{item}}</div>
+{% endfor %}
+</div>
+</div>
+
+<script>
+    set_1 = document.getElementById("question_set_1");
+    set_2 = document.getElementById("question_set_2");
+    set_3 = document.getElementById("question_set_3");
+    var elem = document.getElementById("check-in-bar");
+    submit_form = document.getElementById('query_arr')
+    submit_input_1 = document.getElementById('query_field_1')
+    submit_input_2 = document.getElementById('query_field_2')
+    submit_input_3 = document.getElementById('query_field_3')
+    count = 0;
+    labels_dic_1 = []
+    labels_dic_2 = []
+    labels_dic_3 = []
+    output_arr = []
+
+    const clickFunc = () => {
+        console.log(count)
+        if (count == 0){
+        set_1.style.display = "none";
+        set_2.style.display = "inline";
+        elem.style.width = "35%"
+        count = 1;
+        return;
+        }
+        
+        if (count == 1){
+        set_2.style.display = "none";
+        set_3.style.display = "inline";
+        count = 2;
+        elem.style.width = "70%"
+        return;
+        }
+        
+        if (count == 2){
+        set_3.style.display = "none";
+        count = 0;
+        elem.style.width = "100%";
+        submit_input_1.value = labels_dic_1
+        submit_input_2.value = labels_dic_2
+        submit_input_3.value = labels_dic_3
+        submit_form.submit()
+        }
+    }
+
+    const labelclicked = (e, array) => {
+        if (e.firstChild.style.display == "inline"){
+            e.firstChild.style.display = "none"
+            for( var i = 0; i < array.length; i++){ 
+            if ( array[i] === `${e.id}`) { 
+                array.splice(i, 1); 
+                i--; 
+                }
+            }
+            console.log(array)
+
+        } else {
+            e.firstChild.style.display = "inline"
+            array.push(`${e.id}`)
+            console.log(array)
+        }
+    }
+
+</script>
+</body>

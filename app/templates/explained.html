@@ -1,0 +1,38 @@
+{% extends "base.html" %} 
+{% block title %}results explained{% endblock %} 
+{% block content %}
+<div class="container">
+<img src="/static/images/Logo2.png" width="110px" height="110px"><br>
+<div class="container">
+<p class="center"> How to read your results?</p><br>
+<h3>How did we collected your results?</h3>
+<h4> According to your past activity, Nicely will predict your relative emotional
+     state and score it based on our algorithms. Different score range suggests the
+      inner activities you have, and Nicely will have different advice towards
+       different score segments. </h4> <br>
+
+<h4>After data is collected in the first parts of the program, they will then be fed into a pre-trained sentiment analysis model to predict its underlying emotions. In general, a machine learning model uses the patterns in the given data set and tries to simulate the pattern which was demonstrated in that dataset. The training process starts with manually labeling sample data that we want the model to look at, and feeding them into the developing model. The model will then train itself by predicting, comparing the predictions with the manual labels, and modify its basis and weights in the network. In the end, we managed to use a pre-trained model with four parameters: anger, joy, sadness and optimism, and each text input will be analyzed and predicted in the four fields. With the information collected in the social media profiles, each one of them will be analyzed with the model, and generate a predicted emotional score for the statement. 
+</h4><br>
+
+<h4>The raw predicted emotional score will then be cleaned up and visualized through the use of pandas, a library that specializes in data analysis. Nicely will then generate a pie chart, bar graph, for each of the text data. A line graph and area graph will also be created to illustrate the overall emotional trend of the user, outlining the highs and lows in the user’s internet activity. The processed data and charts will then be submitted to the front-end app or website for the user to view and consume. </h4><br>
+
+<h3>How to know how you are doing emotionally?</h3>
+<h4>Each social media post is being calculated into four different labels, Angler, Joy, Sadness and optimism. The Post emotional score is a number that measures the ratio between your positive emotions (Optimism, Joy) and the negative emotions (Sadness, anger). The number is a measurement ranging from 0-100, and the number can be organized into four different groups:</h4>
+    <ul>
+        <h4>100-80</h4>
+        <h4>80-60</h4>
+        <h4>60-40</h4>
+        <h4>Below 40</h4>
+    </ul>
+
+<p class="text-muted">* Nicely feedback results does not represent clinical diagnosis. If you are experiencing 
+     negative emotions that last for more than two weeks, please seek professional help from a verified 
+     hospital or consult online as soon as possible *</p></div></div>
+
+{%- for message in get_flashed_messages() %} 
+{{ message }}<br> 
+{%- endfor%}
+
+</div>
+
+    {% endblock %}

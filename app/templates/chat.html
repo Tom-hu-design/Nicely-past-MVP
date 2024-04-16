@@ -1,0 +1,82 @@
+<head>
+  <link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+    <link href="/static/styles/Signup.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/nicely.svg">
+    <title>Connect with a therapist</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/info" style="padding-left: 5%;">
+          <img src="/static/images/Logo2.png" width="110px" height="110px">
+        </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav" style="padding-left: 55%;">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/info">Home</a>
+          </li>
+          <li class="nav-item" style="padding-left: 50px;">
+            <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          </li>
+          <li class="nav-item"  style="padding-left: 50px;">
+            <a class="nav-link active" aria-current="page" href="/about">About</a>
+          </li>
+          <li class="nav-item"  style="padding-left: 50px;">
+            <button class="nav-link active login-btn" aria-current="page" onclick="location.href = '/login'">Log in</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="center">
+<p style="font-size: 50px;">Welcome to the Chat page!</p>
+<h3>On this page, we connect you with trained professionals to support your metal wellbeing</h3>
+<p class="text-muted center">Want to join as a counselor? Click <a href="/chat_signup" class="text-muted">here </a>to join our Nicely!</p>
+
+</div>
+<div class="row">
+    {% for person in people %}
+<div class="col-3" style="margin: auto;">
+<div class="card" style="width: 18rem;">
+    <img src="{{person.media_directory}}" class="card-img-top">
+    <div class="card-body">
+      <h5 class="card-title">@{{person.name}}</h5>
+      <div class="wrapper">
+      <p class="card-text hid" style="color: black; text-decoration: none;">{{person.gender}} counselor. {{person.description}}</p>
+    </div>
+      <button onclick = clickFunc() class="btn btn-primary">View details</button>
+      <p class = "text-muted" style="font-size: small; padding-top: 5px;">Providing service in {{person.language}}</p>
+
+    <div class="card-footer">
+      <p class="card-text">Starting at {{person.fee}}$ per hour</p>
+    </div>
+    </div>
+</div>
+</div>
+{% endfor %}
+</div>
+
+{%- for message in get_flashed_messages() %} 
+{{ message }}<br> 
+{%- endfor%}
+
+<script>
+  const clickFunc = (e) => {
+    console.log (e)
+  }
+
+</script>
+</body>

@@ -1,0 +1,451 @@
+<head>
+  <script src="/static/js/Chart.min.js"></script>
+  <script src="/static/js/wordcloud2.js"></script>
+  <link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+  <link href="/static/styles/Signup.css" rel="stylesheet">
+  <link rel="icon" href="/static/images/nicely.svg">
+  <style>
+
+    td{
+      padding: 8px;
+    }
+
+    td:first-child,
+    th:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    td:last-child,
+    th:last-child {
+      border-radius: 0 10px 10px 0;
+    }
+  </style>
+  </head>
+  
+      <body style="background-color: #434EB4; overflow-x: hidden; overflow-y: hidden;">
+      <img src="/static/images/Nicely-logo-3.png" width="160px" height="auto" style="margin-left: 15px; padding-top: 8px; z-index: -2;">
+  
+      <div class="dashboard-rectangle-mid">
+        <div class="labels-tags" style="padding-top: 0.5%;">
+          {% for i in labels_dic_1 %}
+          <button class="client-label-3" id={{ i }} onclick="ClickLabel(this)"><div style="font-size: 12px; margin:3px;">{{i}}</div></button>
+          {% endfor %}
+          <button class="client-label-1" id="5" style="margin-left: 35px;" onclick="ClickLabel(this)"><div style="font-size: 12px; margin:3px;">{{labels_dic}}</div></button>
+          {% for i in labels_dic_2 %}
+          <button class="client-label-2" id={{ i }} onclick="ClickLabel(this)"><div style="font-size: 12px; margin:3px;">{{i}}</div></button>
+          {% endfor %}
+          <button class="client-label-1" id="9" onclick="ClickLabel(this)"><div style="margin:0px 3px 0px 3px;">+</div></button>
+        </div>
+        <div class="profile-divider"></div>
+
+        <div class="container" style="position:relative; top: 21%; left: -6%; width: 83%; height: 73%;overflow-y: scroll;">
+          <div>
+          <div style="font-size: 22px;margin-bottom: -40px; margin-top: 10px;">Data Analysis</div>
+        </div>
+          <div>
+          <input type="text" placeholder="Search..." class="form-control search_input" id="queryinput">
+          <table class="table table-hover" style="width: 100%;border-collapse: separate; border-spacing: 0px 10px;margin-top: -10px;text-align: center;"> 
+            <thead>
+              <tr style="color:#1624A1;font-size: 14px;">
+                <th scope="col" width="40%" style="text-align: left;">Content</th>
+                <th scope="col" width="10%" id="anger" onclick="clickStatus(this)">Anger<img style="margin-left: 3px;" src="/static/images/filter_default.svg"></th>
+                <th scope="col" width="10%" id="joy" onclick="clickStatus(this)">Joy<img style="margin-left: 3px;" src="/static/images/filter_default.svg"></th>
+                <th scope="col" width="10%" id="optimism" onclick="clickStatus(this)">Optimism<img style="margin-left: 3px;" src="/static/images/filter_default.svg"></th>
+                <th scope="col" width="10%" id="sadness" onclick="clickStatus(this)">Sadness<img style="margin-left: 3px;" src="/static/images/filter_default.svg"></th>
+                <th scope="col" width="10%" id="score" onclick="clickStatus(this)">Score<img style="margin-left: 3px;" src="/static/images/filter_default.svg"></th>
+                <th scope="col" width="10%" id="time" onclick="clickStatus(this)">Time</th>
+              </tr>
+            </thead>
+          
+            <tbody id="table_id" style="border-radius: 20px;font-size: 12px;">
+              {% for info in data %}
+              <tr id = "content" style="background-color: white; padding: 2px;">
+                <td id="text" style="text-align: left;">{{ info.content }}</td>
+                <td id="anger">{{ info.Anger }}</td>
+                <td id="joy">{{ info.Joy }}</td>
+                <td id="optimism">{{ info.Optimism }}</td>
+                <td id="sadness">{{ info.Sadness }}</td>
+                <td id="score">{{ info.AveDailyScore }}</td>
+                <td id="time">{{ info.Tweet_time }}</td>
+              </tr>
+              {% endfor %}
+            </tbody><br><br>
+            </table><br>
+          
+            <div class="center">
+              <h4>Word Frequency Map</h4>
+            <div id="canvas" style="width: 100%; height: 420px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); border-radius: 10px;"></div>
+          </div><br>
+          <h4>Word Frequency Count</h4>
+            <table id = "portrait" class="table table-hover center" style="width: 100%;border-collapse: separate; border-spacing: 0px 10px;margin-top: -10px;text-align: center;">
+              <thead>
+                <tr style="font-size: 14px;">
+                  <th scope="col">Word label</th>
+                  <th scope="col">Count</th>
+                </tr>
+              </thead>
+              <tbody  id="portait_info" style="background-color: white; padding: 2px;font-size: 12px;">
+            </tbody>
+            </table>
+          </table>
+          </div>
+          {%- for message in get_flashed_messages() %} 
+          {{ message }}  <br> 
+          {%- endfor%}
+        </div>
+      </div>
+      
+      <div class="dashboard-rectangle-right">
+        <div class="side-rectangle-checkin">
+          <div class="container" style="background-color: white; width: 100%; height: 50%; border-radius: 15px;">
+            <div class="month">
+              <ul style="font-size: 8px; margin-left: 55%;">
+                <li class="prev">&#10094;</li>
+                <li class="next">&#10095;</li>
+                <li>NOV 2023</li>
+              </ul>
+            </div>
+            <div class="calender-label">Daily Checkin</div>
+            <div class="calender-divider"></div>
+            <ul class="weekdays">
+              <li>S</li>
+              <li>M</li>
+              <li>T</li>
+              <li>W</li>
+              <li>TH</li>
+              <li>F</li>
+              <li>S</li>
+            </ul>
+            
+            <ul class="days">
+              <li><span class="past">30</span></li>
+              <li><span class="past">31</span></li>
+              <li><span class="entry">1</span></li>
+              <li>2</li>
+              <li><span class="entry">3</span></li>
+              <li>4</li>
+              <li>5</li>
+              <li><span class="entry">6</span></li>
+              <li>7</li>
+              <li>8</li>
+              <li><span class="entry">9</span></li>
+              <li><span class="active">10</span></li>
+              <li>11</li>
+              <li>12</li>
+              <li>13</li>
+              <li>14</li>
+              <li>15</li>
+              <li>16</li>
+              <li>17</li>
+              <li>18</li>
+              <li>19</li>
+              <li>20</li>
+              <li>21</li>
+              <li>22</li>
+              <li>23</li>
+              <li>24</li>
+              <li>25</li>
+              <li>26</li>
+              <li>27</li>
+              <li>28</li>
+              <li>29</li>
+              <li>30</li>
+              <li><span class="past">1</span></li>
+              <li><span class="past">2</span></li>
+              <li><span class="past">3</span></li>
+            </ul>
+            <div class="calender-divider"></div>
+          </div>
+            <div class="container center" style="width: 80%; height: 50%;">
+              <div style="font-size: 20px; margin-top: 8%;">How's your day?</div>
+              <div style="font-size: 11px; color:#6C78B5; margin-top: 2%">Choose a way to tell us</div>
+                <div style="font-size:12px;margin-left:5%;">
+                <div class="check-in-btn" style="margin-top: 2%; padding-top: 6px;cursor: pointer;" onclick="viewFunc(this)">Post a diary</div>
+                <div class="check-in-btn" style="margin-top: 14%; padding-top: 6px;cursor: pointer;" onclick="viewFunc(this)">Record</div>
+                <div class="check-in-btn" style="margin-top: 26%; padding-top: 6px;cursor: pointer;" onclick="viewFunc(this)">Guided checkin</div>
+                </div>
+              </div>
+          </div>
+        <div class="side-rectangle-tests">
+          <div class="container">
+          <div style="font-size: 20px; padding-top: 7%;"class="center">Mental tests</div>
+            </div>
+            <div style="font-size: 12px; padding-top: 3%; padding-left: 10%; color:#6C78B5;">Previous records:</div>
+            <ul style="list-style-type: none; color: #1624A1; margin-top: 3%;">
+              <li>MBTI<p style="display: inline; font-size: 10px; margin-left: 38%;">10/31 12:31</p></li>
+              <li>DIST<p style="display: inline; font-size: 10px; margin-left: 40%;">10/31 12:31</p></li>
+              <li>GAD-7<p style="display: inline; font-size: 10px; margin-left: 32%;">10/31 12:31</p></li>
+              <li>PHQ-9<p style="display: inline; font-size: 10px; margin-left: 32%;">10/31 12:31</p></li>
+            </ul>
+            <div style="font-size:12px; margin-left:5%;" class="center">
+            <div class="mental-test-btn" style="margin-left: 5%; padding-top: 6px;">View all</div>
+            <div class="mental-test-btn" style="margin-left: 35%; padding-top: 6px;">New tests</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-rectangle-side1 container" style="text-align: left;">
+        <div style="margin-left: 3%;">
+        <p style="font-size: 14px; color: white; margin-top: 8%;">Account</p>
+          <div style="font-size: 11.5px; color: white;">
+          <p onclick="NavFunc()" style="cursor: pointer;"><img src="/static/images/twitter_icon.svg" width="17px" height="auto" style="margin-right: 7%; margin-left: 1%;">Twitter</p>
+          <p><img src="/static/images/instagram_icon.svg" width="21px" height="auto" style="margin-right: 6%; margin-left: -1%;">Instagram</p>
+          <p><img src="/static/images/facebook_icon.svg" width="15px" height="auto" style="margin-right: 8%; margin-left: 1%;">Facebook</p>
+          <p><img src="/static/images/tictok_icon.svg" width="20px" height="auto" style="margin-right: 6%; margin-left: -1%;">Tictok</p>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-rectangle-side2 container" style="text-align: left;">
+        <div style="margin-left: 3%;">
+          <p style="font-size: 12.5px; color: white; margin-top: 8%;">All data</p>
+          <p style="font-size: 9.5px; color: white; margin-top:-6%"><img src="/static/images/all_data.svg" width="21px" height="auto" style="margin-right: 7%; margin-left: 1%;">All data</p>
+        </div>
+      </div>
+      <div class="therapist-profile-circle">
+        <img src="/static/images/Thearpist_demo.png" width="87px" height="auto" style="margin-left: -4px;">
+        <p style="color: white; font-size: 12px;margin-top: 10%;white-space: nowrap;">Your Therapist</p>
+      </div>
+      <div>
+        <img src="{{ media_dic }}" style="object-fit: none;" class="user-profile-circle">
+        <div class="container user-welcome">
+        <h2>Hi, @{{usr}}!</h2>
+        <p style="color: 6C78B5;">Last updated on 9/18 2022</p>
+      </div>
+      </div>
+      <input type="text" class="search-bar"/>
+      <div style="position:absolute; top: 21px;left: 610px; width: 500px;">
+      <a href="/info" style="text-decoration:none; color: white;"><p style="display:inline; margin-right: 75px">Home</p></a>
+      <a href="/blog" style="text-decoration:none; color: white;"><p style="display:inline; margin-right: 75px">Blogs</p></a>
+      <a href="/about" style="text-decoration:none; color: white;"><p style="display:inline; margin-right: 75px">About</p></a>
+      <a href="/logout" style="text-decoration:none; color: white;"><button style="display:inline; border-radius: 20px;  border: none; outline: none; background-color: #616AC0; color:white; height: 30px; width: 95px;">Log out</button>
+    </div>
+  
+    <script>
+      const viewFunc = () => {
+      window.location = '/view';
+    }
+
+      const NavFunc = () => {
+      window.location = '/dashboard';
+    }
+
+      query_form = document.getElementById("query_form")
+      query_input = document.getElementById("query_field")
+      const QueryFunc = (e) => {
+        query_input.value = e.value
+        query_form.submit()
+      }
+
+  filter_input = document.getElementById('queryinput');
+
+  const click_management = {
+      anger: "none",
+      joy: "none",
+      optimism: "none",
+      sadness: "none",
+      score: "none",
+      time: "none"
+  };
+
+  remove_dic = ['the', 'to', 'and', 'of', 'in', 'for', 'that', 'is', 'on', 'are', 'with', 'our', 'this','we', 'their', 'it', 'my', 
+                'at', 'have', 'as', 'an', 'has', 'do', 'v.', 'by', 'you', 'The', 'your', 'still', "down", "so", 'be', 'his', 'And', 'It', 
+                'who', 'more', 'was', 'all', 'can', 'than', 'then', 'get', `i’m`, 'from', 'no', 'every', 'everyone', 'will', 'right', 'make',
+              'had', 'doing', 'us', 'not', 'they', 'many', 'just', 'those', 'one', 'but', 'them', 'today,', 'it’s', 'we’ve', 'or', 'been', 'when',
+            'like','me']
+
+
+  const array_remove = (array, input) => {
+    processed_array = array.filter((value, index, arr) => 
+    value[0] != input)
+    return processed_array
+  };
+  
+  const dic_init = () => {
+    all_content = document.querySelectorAll(`[id^="content"]`)
+    content_array = Array.from(all_content)
+    input_text = ''
+    dictionary = {}
+
+    content_array.forEach(e => {
+      item = e.querySelector(`[id^="text"]`)
+      content = item.innerHTML.toLowerCase()
+      input_text += content
+    });
+
+    const create_dic = (text) => {
+      words = text.replace(/[.]g/, '').split(/\s/);
+      words.forEach(e => {
+        if (!dictionary[e]){
+          dictionary[e] = 0
+        }
+      dictionary[e] += 1});
+    }
+    create_dic(input_text)
+
+    let dic_sorted = [];
+    for (element in dictionary){
+      if (element.length > 1){
+      dic_sorted.push([element, dictionary[element]])
+      }
+    }
+
+    dic_raw = dic_sorted
+    remove_dic.forEach((e) => {
+    dic_raw = array_remove(dic_raw, e)
+  });
+
+  dic_final = dic_raw.sort((a, b) => 
+      b[1] - a[1]
+      );
+
+    return dic_final.slice(0, 80)
+  }
+
+  word_portrait = dic_init()
+  tbody = document.getElementById('portait_info')
+  word_canvas = document.getElementById('canvas')
+
+  WordCloud(
+  word_canvas, {
+  list: word_portrait,
+  gridSize: 28,
+  weightFactor: 4,
+  fontFamily: 'Times, serif',
+  color: function (word, weight) {
+    return (weight < 8) ? '#434EB4' : '#000000';
+  },
+  rotateRatio: 0.5,
+  rotationSteps: 3,
+  backgroundColor: 'white'
+});
+
+  const portrait_init = (word_portrait) => {
+    word_portrait.forEach((e) => {
+      p_label = document.createElement('tr')
+      label_raw = document.createElement('td')
+      count_raw = document.createElement('td')
+      label_raw.innerHTML = e[0]
+      count_raw.innerHTML = e[1]
+
+      p_label.appendChild(label_raw)
+      p_label.appendChild(count_raw)
+      tbody.appendChild(p_label)
+  });
+  }
+
+  portrait_init(word_portrait)
+
+  console.log(document.getElementsByTagName('th')[1])
+
+  const clickStatus = (e) => {
+    parent = e.parentNode
+    img_array = parent.querySelectorAll('img')
+    img_raw = Array.from(img_array)
+    img_raw.map(x => x.src = "/static/images/filter_default.svg")
+
+    clicked_element = e.id
+    if (click_management[clicked_element] == "none") {
+      // for (element in click_management){
+      //   element = "none"
+      // }
+      click_management[clicked_element] = "H-L"
+      LowFunc(e)
+    } else if (click_management[clicked_element] == "H-L"){
+      console.log(click_management)
+      click_management[clicked_element] = "none"
+      HighFunc(e)
+    }
+  };
+
+  const LowFunc = (e) => {
+    e.getElementsByTagName('img')[0].src = "/static/images/filter_down.svg"
+    all_scores = document.querySelectorAll(`[id^="content"]`)
+    sorted_scores = Array.from(all_scores)
+    parent_node = document.getElementById('table_id')
+
+    sorted_scores.sort((a, b) => 
+    a.querySelector(`[id^="${e.id}"]`).innerHTML - b.querySelector(`[id^="${e.id}"]`).innerHTML
+    );
+
+    while (parent_node.firstChild) {
+      parent_node.removeChild(parent_node.firstChild);
+    }
+
+    sorted_scores.forEach(e => {
+      parent_node.appendChild(e)
+    });
+  }
+
+  const HighFunc = (e) => {
+    e.getElementsByTagName('img')[0].src = "/static/images/filter_up.svg"
+    all_scores = document.querySelectorAll(`[id^="content"]`)
+    sorted_scores = Array.from(all_scores)
+    parent_node = document.getElementById('table_id')
+
+    sorted_scores.sort((a, b) => 
+    b.querySelector(`[id^="${e.id}"]`).innerHTML - a.querySelector(`[id^="${e.id}"]`).innerHTML
+    );
+
+    while (parent_node.firstChild) {
+      parent_node.removeChild(parent_node.firstChild);
+    }
+
+    sorted_scores.forEach(e => {
+      parent_node.appendChild(e)
+    });
+  }
+
+  const query = () => {
+    all_content = document.querySelectorAll(`[id^="content"]`)
+    content_array = Array.prototype.slice.call(all_content)
+
+    Unhighlight(content_array)
+    query_filter(content_array)
+}
+
+  const query_filter = (content_array) => {
+    count = 0
+    content_array.forEach(e => {
+      td_element = e.querySelector(`[id^="text"]`)
+      raw_content = td_element.innerHTML
+      Element_content = raw_content.toLowerCase()
+
+        if (!(Element_content.includes(filter_input.value.toLowerCase()))){
+          e.style.display = "none"
+        }else{
+          e.style.display = "table-row"
+          index = Element_content.indexOf(filter_input.value);
+          e_append = Element_content.substring(0, index) + "<span class='highlight'>" + Element_content.substring(index, index + filter_input.value.length) + "</span>" + Element_content.substring(index + filter_input.value.length);
+          e.querySelector(`[id^="text"]`).innerHTML = e_append;
+          count++
+        }
+      });
+    num_entry = document.getElementById('total_entries')
+    num_entry.innerHTML = "Total entries: " + count
+  } // functionalities of the querying mechanism
+
+  const Unhighlight = (content_array) => {
+    content_array.forEach(e => {
+    td_element = e.querySelector(`[id^="text"]`)
+
+    if (td_element.querySelector(`[class^="highlight"]`) !== null){
+      highlighted_element = td_element.querySelectorAll(`[class^="highlight"]`)
+      individual_e = Array.from(highlighted_element)
+      individual_e.forEach(e => {
+        inner_text = e.innerHTML
+        parent = e.parentNode.innerHTML
+        del_select = `<span class="highlight">${inner_text}</span>`
+        del_content = parent.replaceAll(del_select, inner_text)
+        e.parentNode.innerHTML = del_content
+        });
+      }
+    });
+  } // dynamic render searches
+
+  filter_input.addEventListener('keyup', query)
+
+  const ClickLabel = (e) => {
+        window.location = '/labels';
+      }
+
+</script>

@@ -1,0 +1,34 @@
+{% extends "base.html" %} {% block title %}Meditation{% endblock %} {% block
+content %} 
+
+<div class="center">
+    <img src="/static/images/Logo2.png" width="110px" height="110px">
+<h2>Feeling Negative? Try one of our pre-selected meditation lesson to start your day</h2>
+<p class = "center" style="padding-top: 2%;"> “It's never too late - never too late to start over, never too late to be happy.” - Jane Fonda</p>
+</div>
+<div class="d-flex justify-content-around" style="padding-top: 4%;">
+    <div class="embed-responsive embed-responsive-16by9 center" >
+        <p>Daily Calm | 10 Minute Mindfulness Meditation | Be Present</p>
+        <iframe width = "400px" height = "225px" class="embed-responsive-item" src="https://www.youtube.com/embed/ZToicYcHIOU" allowfullscreen></iframe>
+      </div>
+      <div class="embed-responsive embed-responsive-16by9 center">
+        <p>5-Minute Meditation You Can Do Anywhere</p>
+        <iframe width = "400px" height = "225px" class="embed-responsive-item" src="https://www.youtube.com/embed/inpok4MKVLM" allowfullscreen></iframe>
+      </div>
+</div>
+
+<div class="d-flex justify-content-around" style="padding-top: 5%; padding-bottom: 5%;">
+    <div class="embed-responsive embed-responsive-16by9 center">
+        <p>10 MIN Guided Meditation To Clear Your Mind & Start New Positive Habits</p>
+        <iframe width = "400px" height = "225px" class="embed-responsive-item" src="https://www.youtube.com/embed/uTN29kj7e-w" allowfullscreen></iframe>
+      </div>
+      <div class="embed-responsive embed-responsive-16by9 center">
+        <p>Guided Meditation for Positive Energy, Relaxation, Peace</p>
+        <iframe width = "400px" height = "225px" class="embed-responsive-item" src="https://www.youtube.com/embed/86m4RC_ADEY" allowfullscreen></iframe>
+      </div>
+</div>
+
+{%- for message in get_flashed_messages() %} {{ message }}  <br> {%- endfor
+%}
+
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html" %} 
+{% block head %}
+<meta charset="uft-8">
+<style>body{background-color: white;}label{padding-bottom: 10px;}</style>
+{% endblock %}
+{% block title %}Let us know you better!{% endblock %} 
+
+{% block content %}
+
+<div id="myProgress" style="position:absolute;z-index:3;top: 0%;">
+    <div id="myBar"></div>
+  </div>
+
+
+  <div class="split left" style="overflow-y: hidden;">
+    <img src="/static/images/signup.png" class="signup-image">
+  </div>
+
+  <div class="split right container center" style="padding-top: 5%;">
+
+    <div class="contianer" style="width: 330px; margin-left: 15%; text-align: left;">
+                <div style="font-size: x-large; font-family: PingFang SC;">Let us know you better.</div>
+        <div id="flashed" style="text-align: center;">
+        {%- for message in get_flashed_messages() %} {{ message }} {%- endfor %}
+        </div>
+    <form action="{{request.path}}" method="post" id="myForm" style="padding-top:12%;">
+        {{ form.csrf_token }}
+        <!-- <div class="container border rounded " style="background-color: white;"> -->
+        <!-- <div class="container" style="width: 1000px; height: 410px;"> -->
+        <!-- <div class="row">
+        <div class="container col">
+        <div class="form-group"> -->
+            
+        {{ form.twitter_username.label }}:
+        {{ form.twitter_username(placeholder="", class="form-control  registration-input-box-inactive") }}
+
+        {{ form.email.label(style="padding-top:2%;") }}:
+        {{ form.email(placeholder="", class="form-control registration-input-box-inactive") }}
+
+        <div class="row" style="padding-top:4%;">
+            <div class="col" style="margin-right: -14px;">
+            {{ form.demographic.label }}:
+            <div class="custom-select">
+            {{ form.demographic(placeholder="", class="form-select-inactive") }}
+            </div>
+            </div>
+            <div class="col">
+            {{ form.gender.label }}:
+            <div class="custom-select">
+            {{ form.gender(placeholder="", class="form-select-inactive") }}
+            </div>
+            </div>
+        </div>
+            <!-- </div> -->
+        <div class="row" style="padding-top:4%;">
+            <div class="col" style="margin-right: -14px;">
+            {{ form.first_language.label }}:
+                <div class="custom-select">
+                {{ form.first_language(placeholder="", class="form-select-inactive") }}
+                </div>
+            </div>
+            <div class="col">
+            {{ form.work_status.label }}:
+            <div class="custom-select">
+            {{ form.work_status(placeholder="", class="form-select-inactive") }}
+            </div>
+            </div>
+        </div>
+    <!-- </div> -->
+        <!-- <div class="container col"> -->
+            <!-- {{ form.number.label }}:
+            {{ form.number(placeholder="", class="form-control inputbox") }} -->
+            <!-- </div> -->
+
+        <!-- <div class="container col"> -->
+        <!-- <button onclick="parallel()" type="button" class="submit" style="margin-top: 107px;">submit</button> -->
+        <input onclick="clickFunc()" type="submit" class="form-submit-btn" style="margin-top: 8%;">
+        <!-- </div> -->
+    <!-- </div> -->
+    <!-- <p class="form-text text-muted" style="word-wrap: normal; font-size: xx-small;">*We will not, in any circumstances, share your personal information with other individuals or organizations without your permission, including public organizations, corporations or individuals. The information above will be used to improve the accuracy of the analysis.*</p><br><br> -->
+</div>
+</div>
+
+        <!-- <div id = "loading" class="container border" style="width: 800px; height: 100px; background-color: rgb(247, 247, 247); border-radius: 3px;">
+            <h2>LOADING...</h2>
+            <div id="myProgress">
+            <div id="myBar">0%</div>
+          </div> -->
+    </form>
+    </div>
+
+    <script>
+        const progress = document.getElementById("myProgress")
+        progress.style.display = "none"
+        var i = 0;
+    
+        const clickFunc = () => {
+            if (document.getElementById('myForm').checkValidity() == true){
+                parallel()
+            }
+        }
+        const progressbar = () => {
+            return new Promise((resolve, reject) => {
+                progress.style.display = "inline-block"
+            if (i == 0) {
+                i = 1;
+                var elem = document.getElementById("myBar");
+                var width = 1;
+                var id = setInterval(frame, 10);
+                function frame() {
+                if (width >= 100) {
+                    progress.style.display = "none"
+                    clearInterval(id);
+                    i = 0;
+                    resolve("progress finished")
+                } else {
+                    width+=0.06;
+                    elem.style.width = width + "%";
+                }
+                }
+            }
+            })
+        }
+        
+        const submit = () => {
+            const flash_text = document.getElementById("flashed")
+            document.getElementById("myForm").submit()
+            return new Promise((resolve, reject) => {
+                    resolve("upload success")
+            })
+        }
+        
+        async function parallel() {
+          console.log('parallel start')
+        
+          await Promise.all([
+              (async()=>console.log(await progressbar()))(),
+              (async()=>console.log(await submit()))()
+          ])
+        }
+        
+    window.onload = () => {
+        console.log("loaded")
+        if (document.getElementById("flashed").innerText == "Records were successfully added"){
+            window.location.replace("/dashboard")
+        }
+    }
+    
+    </script>
+
+    {% endblock %}

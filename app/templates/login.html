@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+      <link href="/static/styles/Signup.css" rel="stylesheet">
+      <link rel="icon" href="/static/images/nicely.svg">
+    <title>User login</title>
+  </head>
+
+<body>
+  <div class="split left" style="overflow-y: hidden;">
+    <img src="/static/images/login.png" class="login-image">
+  </div>
+
+      <div class="split right container center">
+        <div class="contianer" style="width: 330px; margin-left: 15%; text-align: left;">
+          <h4 style="padding-top: 25%;"> Sign in to Nicely.</h4>
+
+          <p style="padding-top: 8%;">I'm a:</p>
+          <div class="d-flex justify-content-between">
+          <div class="rectangle-therapist center" id="user" style="color: white; position: relative;" onclick="clickFunk(this)">
+            <p style="padding-top: 8%; font-size:16px; z-index: 1;">User</p>
+            <img src="/static/images/selection-icon.png" id="user-click" style="z-index: 2; height: 20px; position: absolute; top: 30px; left: 139px;">
+          </div>
+          <div class="rectangle-user center" id="therapist" style="color: white; position: relative;" onclick="clickFunk(this)">
+            <p style="padding-top: 8%; font-size:16px;">Therapist</p>
+            <img src="/static/images/selection-icon.png" id="therapist-click" style="z-index: 2; height: 20px; position: absolute; top: 30px; left: 139px; display: none;">
+          </div>
+          </div>
+        
+          <form action="{{request.path}}" method="post" style="padding-top: 8%;">
+            <!-- <div class="form-group"> -->
+              <!-- <div class="mx-sm-3"> -->
+                {{ form.csrf_token }}
+                {{ form.username.label(class="card-text sr-only") }}:
+                {{ form.username(placeholder="", class="form-control registration-input-box-inactive", style="margin-top:2%;") }}
+                <!-- <br><br></div> -->
+            <!-- <div class="mx-sm-3"> -->
+              {{ form.password.label(class="card-text", style="margin-top:8%;") }}: 
+              <a href="/forgot-password"><div style="float: right; font-size: small; margin-top:8%; color: #1624A1;">forgot password?</div></a>
+
+              {{ form.password(placeholder="", class="form-control registration-input-box-inactive", style="margin-top:2%;") }}
+            <!-- <br></div> -->
+            <div style="padding-top: 8%;">
+            <input type="submit" value="Submit" class="form-submit-btn"/>
+            </div>
+          </form>
+          <p style="padding-top: 3%;">Not a member? <a href="/signup" class="link" style="color: #1624A1; text-decoration:none;">Sign up now.</a></p>
+          </div>
+          </div>
+
+    {%- for message in get_flashed_messages() %} {{ message }}  <br> {%- endfor
+      %}
+
+<script>
+  click1 = document.getElementById("user-click")
+  click2 = document.getElementById("therapist-click")
+  button1 = document.getElementById("therapist")
+  button2 = document.getElementById("user")
+
+  clickFunk = (e) => {
+    if (e.id == "user"){
+      e.style.backgroundColor = "#1624A1";
+      button1.style.backgroundColor = "#9A9A9A";
+      click1.style.display = "inline";
+      click2.style.display = "none";
+    }else if (e.id == "therapist"){
+      e.style.backgroundColor = "#1624A1";
+      button2.style.backgroundColor = "#9A9A9A";
+      click1.style.display = "none";
+      click2.style.display = "inline";
+    }
+  }
+</script>
+
+</body>
+    

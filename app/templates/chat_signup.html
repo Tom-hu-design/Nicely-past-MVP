@@ -1,0 +1,66 @@
+{% extends "base.html" %} 
+
+{% block title %}Welcome!{% endblock %} 
+
+{% block head %} 
+<style>body{background-color: rgb(247, 247, 247);}</style>
+{% endblock %}
+
+{% block content %}
+<div class="center">
+    {%- for message in get_flashed_messages() %} 
+    {{ message }}<br> 
+    {%- endfor%}
+    </div>
+    <form action="{{request.path}}" method="post" style="padding-top: 15px; border-radius: 15px;" enctype = multipart/form-data>
+        {{ form.csrf_token }}
+        <div class="container border rounded " style="background-color: white;">
+        <div class="text-center">
+        <img src="/static/images/Logo2.png" width="110px" height="110px"><br>
+        <b style="font-size: 55px; font-family: PingFang SC;">Join Nicely as a counselor</b><br><br>
+    </div>
+        <div class="container" style="width: 1000px; height: 410px;">
+        <div class="row">
+        <div class="container col">
+        <div class="form-group">
+        {{ form.register_name.label }}:<br>
+        {{ form.register_name(placeholder="Full Name", class="form-control inputbox") }}<br><br>
+
+        </div>
+        {{ form.language_preferred.label }}:
+        {{ form.language_preferred(class="form-select textstyle inputbox") }}<br><br>
+
+        {{ form.register_email.label }}:<br>
+        {{ form.register_email(placeholder="Email", class="form-control inputbox") }}<br>
+
+    </div>
+
+
+        <div class="container col">
+            {{ form.cost.label }}:
+            {{ form.cost(placeholder="Fee per hour", class="form-control inputbox") }}<br><br>
+
+            {{ form.register_gender.label }}:
+            {{ form.register_gender(class="form-select textstyle inputbox") }}<br><br>
+
+            {{ form.register_number.label }}:<br>
+            {{ form.register_number(placeholder="Phone Number", class="form-control inputbox") }}<br>
+            </div>
+
+        <div class="container col">
+        
+        {{ form.work_experience.label(for="description", style="padding-top: 115px;") }}
+        {{ form.work_experience(placeholder = "Enter your experiences here", class="form-control textstyle inputbox") }}
+        <input type="submit" value="submit" class = "submit" style="margin-top: 72px;">
+        </div>
+    </div>
+    {{ form.register_image.label(class="form-label", for="customFile") }}
+    {{ form.register_image(class="form-control", id="customFile") }}<br>
+    <p class="form-text text-muted">*We will not, in any circumstances, share your personal information with other individuals or organizations without your permission, including public organizations, corporations or individuals. The information above will be only used to verify your identity. After you have submitted the registration form, a Nicely representative will contact you within 24 hours to verify your certification and background on the area of mental illness.*</p><br><br>
+    </div><br><br><br><br><br><br><br>
+</div>
+    </form>
+
+
+    {% endblock %}
+

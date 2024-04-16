@@ -1,0 +1,487 @@
+
+<html>
+<head>
+<script src="/static/js/Chart.min.js"></script>
+<link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+<link href="/static/styles/Signup.css" rel="stylesheet">
+<link rel="icon" href="/static/images/nicely.svg">
+<title>User: dashboard</title>
+</head>
+
+    <body style="background-color: #434EB4; overflow-x: hidden; overflow-y: hidden;">
+
+    <form action="/dashboard" method="post" id="query_form">
+      <input type="text" id="query_field" name="query_input" style="display: none;">
+    </form>
+    <img src="/static/images/Nicely-logo-3.png" width="160px" height="auto" style="margin-left: 15px; padding-top: 8px; z-index: -2;">
+
+    <div class="dashboard-rectangle-mid">
+      <div class="labels-tags" style="padding-top: 0.5%;">
+        {% for i in labels_dic_1 %}
+        <button class="client-label-3" id={{ i }} onclick="ClickLabel(this)"><div style="font-size: 12px; margin:3px;">{{i}}</div></button>
+        {% endfor %}
+        <button class="client-label-1" id="5" style="margin-left: 35px;" onclick="ClickLabel(this)"><div style="font-size: 12px; margin:3px;">{{labels_dic}}</div></button>
+        {% for i in labels_dic_2 %}
+        <button class="client-label-2" id={{ i }} onclick="ClickLabel(this)"><div style="font-size: 12px; margin:3px;">{{i}}</div></button>
+        {% endfor %}
+        <button class="client-label-1" id="9" onclick="ClickLabel(this)"><div style="margin:0px 3px 0px 3px;">+</div></button>
+      </div>
+      <div class="profile-divider"></div>
+      <button class="info-details-btn" id="detail_entries" style="position:absolute; z-index:2;" onclick="DetailsFunc()">View more details</button>
+
+      <div class="container" style="position:relative; top: 21%; left: -6%; width: 83%; height: 73%;">
+        <div style="font-size: large;">Here is your emotional snapshot.</div>
+        <div class="dashboard-rectangle-info1">
+          <p style="font-size: 10.5px; margin-left:10%; margin-top: 6%; color: grey;">Average score</p>
+          <p style="font-size: 18px; margin-left:11%; margin-top: -18%; color: black;">{{ EmotionScore }}</p>
+        </div>
+        <div class="dashboard-rectangle-info2">
+          <p style="font-size: 10.5px; margin-left:10%; margin-top: 6%; color: grey;">Your risk</p>
+          <p style="font-size: 18px; margin-left:11%; margin-top: -18%; color: black;">{{ risk }}</p>
+        </div>
+        <div class="dashboard-rectangle-info3">
+          <div style="font-size:10px; margin-left: 15px; margin-top: 10px; color: grey;">Emotional Polar graph</div>
+          <div style="font-size: 19px;margin-left: 20px;">{{ percent_positive }}%<div style="display:inline-block; font-size: 10px; margin-left: 3px;">positive</div></div>
+          <canvas id="doughnut" style="margin-top:-50px;padding-left: 10px; padding-bottom: 10px;"></canvas>
+        </div>
+        <div class="dashboard-rectangle-info4">
+          <p style="margin:10px 0px 5px 15px; font-size: 11.5px;color: grey;">Overall emotional curve</p>
+          <select id="post_filter" style="position: absolute;top:10px; left: 82%; border-color: white; font-size: 11.5px; color: grey;" onchange="QueryFunc(this)">
+            <option value={{ query_field }} id={{ query_field }}>Past {{ query_field }} posts</option>
+            <option value="30" id="30">Past 30 posts</option>
+            <option value="50" id="50">Past 50 posts</option>
+            <option value="80" id="80">Past 80 posts</option>
+            <option value="100" id="100">Past 100 posts</option>
+          </select>
+          <div class="graph-divider"></div>
+          <canvas style="width: 100%; height: 80%;padding-right: 15px; padding-left: 10px;" id="lineChart"></canvas>
+        </div>
+        <div class="dashboard-rectangle-info5">
+          <p style="margin:10px 0px 5px 15px; font-size: 11.5px;color: grey;">Emotional Clock</p>
+          <select id="post_filter" style="position: absolute;top:10px; left: 86%; border-color: white; font-size: 11.5px; color: grey;">
+            <option value="frequency">Frequency</option>
+            <option value="sad">Sadness</option>
+            <option value="ang">Anger</option>
+            <option value="opt">Optimism</option>
+            <option value="joy">Joy</option>
+          </select>
+          <div class="graph-divider"></div>
+          <canvas style="width: 100%; height: 80%;padding-right: 15px;padding-left: 10px;padding-bottom: 6px;" id="barChart"></canvas>
+        </div>
+        <div class="dashboard-rectangle-info6">
+          <p style="margin:10px 0px 5px 15px; font-size: 11.5px;color: grey;">Word Tendency</p>
+          <div class="graph-divider"></div>
+          <ul style="color: grey;font-size:11px; margin-left: -15px;">
+            <li style="margin-bottom: 7px;margin-top: 5px;">Sadness<div style="display:inline-block;margin-left: 40%;color: black;">n/a</div></li>
+            <li style="margin-bottom: 7px;">Anger<div style="display:inline-block;margin-left: 47%; color: black;">n/a</div></li>
+            <li style="margin-bottom: 7px;">Joy<div style="display:inline-block;margin-left: 53%; color: black;">n/a</div></li>
+            <li style="margin-bottom: 7px;">Optimism<div style="display:inline-block;margin-left: 37%; color: black;">n/a</div></li>
+            <li style="margin-bottom: 7px;">Aggressive<div style="display:inline-block;margin-left: 33.5%; color: black;">n/a</div></li>
+            <li style="margin-bottom: 7px;">Most frequent<div style="display:inline-block;margin-left: 25.5%; color: black;">n/a</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="dashboard-rectangle-right">
+      <div class="side-rectangle-checkin">
+        <div class="container" style="background-color: white; width: 100%; height: 50%; border-radius: 15px;">
+          <div class="month">
+            <ul style="font-size: 8px; margin-left: 55%;">
+              <li class="prev">&#10094;</li>
+              <li class="next">&#10095;</li>
+              <li>NOV 2023</li>
+            </ul>
+          </div>
+          <div class="calender-label">Daily Checkin</div>
+          <div class="calender-divider"></div>
+          <ul class="weekdays">
+            <li>S</li>
+            <li>M</li>
+            <li>T</li>
+            <li>W</li>
+            <li>TH</li>
+            <li>F</li>
+            <li>S</li>
+          </ul>
+          
+          <ul class="days">
+            <li><span class="past">30</span></li>
+            <li><span class="past">31</span></li>
+            <li><span class="entry">1</span></li>
+            <li>2</li>
+            <li><span class="entry">3</span></li>
+            <li>4</li>
+            <li>5</li>
+            <li><span class="entry">6</span></li>
+            <li>7</li>
+            <li>8</li>
+            <li><span class="entry">9</span></li>
+            <li><span class="active">10</span></li>
+            <li>11</li>
+            <li>12</li>
+            <li>13</li>
+            <li>14</li>
+            <li>15</li>
+            <li>16</li>
+            <li>17</li>
+            <li>18</li>
+            <li>19</li>
+            <li>20</li>
+            <li>21</li>
+            <li>22</li>
+            <li>23</li>
+            <li>24</li>
+            <li>25</li>
+            <li>26</li>
+            <li>27</li>
+            <li>28</li>
+            <li>29</li>
+            <li>30</li>
+            <li><span class="past">1</span></li>
+            <li><span class="past">2</span></li>
+            <li><span class="past">3</span></li>
+          </ul>
+          <div class="calender-divider"></div>
+        </div>
+          <div class="container center" style="width: 80%; height: 50%;">
+            <div style="font-size: 20px; margin-top: 8%;">How's your day?</div>
+            <div style="font-size: 11px; color:#6C78B5; margin-top: 2%">Choose a way to tell us</div>
+              <div style="font-size:12px;margin-left:5%;">
+              <div class="check-in-btn" style="margin-top: 2%; padding-top: 6px;cursor: pointer;" onclick="checkinFunc(this)">Post a diary</div>
+              <div class="check-in-btn" style="margin-top: 14%; padding-top: 6px;cursor: pointer;" onclick="checkinFunc(this)">Record</div>
+              <div class="check-in-btn" style="margin-top: 26%; padding-top: 6px;cursor: pointer;" onclick="checkinFunc(this)">Guided checkin</div>
+              </div>
+            </div>
+        </div>
+      <div class="side-rectangle-tests">
+        <div class="container">
+        <div style="font-size: 20px; padding-top: 7%;"class="center">Mental tests</div>
+          </div>
+          <div style="font-size: 12px; padding-top: 3%; padding-left: 10%; color:#6C78B5;">Previous records:</div>
+          <ul style="list-style-type: none; color: #1624A1; margin-top: 3%;">
+            <li>MBTI<p style="display: inline; font-size: 10px; margin-left: 38%;">10/31 12:31</p></li>
+            <li>DIST<p style="display: inline; font-size: 10px; margin-left: 40%;">10/31 12:31</p></li>
+            <li>GAD-7<p style="display: inline; font-size: 10px; margin-left: 32%;">10/31 12:31</p></li>
+            <li>PHQ-9<p style="display: inline; font-size: 10px; margin-left: 32%;">10/31 12:31</p></li>
+          </ul>
+          <div style="font-size:12px; margin-left:5%;" class="center">
+          <div class="mental-test-btn" style="margin-left: 5%; padding-top: 6px;">View all</div>
+          <div class="mental-test-btn" style="margin-left: 35%; padding-top: 6px;">New tests</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-rectangle-side1 container" id="social_nav" style="padding-top:-20px; text-align: left;font-size: 11.5px; color: white;">
+      <p style="font-size: 14px; color: white; margin-top: 8%;margin-left: 3%;">Account</p>
+        <div style="background-color: #EFF1FF; border-radius: 7px; width: 200px; height: 30px;margin-bottom: 6%;color: 1624A1;padding-right: 20px">
+        <p style="padding-top: 6px;"><img src="/static/images/twitter_selected.svg" width="17px" height="auto" style="margin-right: 7%; margin-left: 8px;">Twitter</p>
+      </div>
+        <p style="margin-bottom: 12%;"><img src="/static/images/instagram_icon.svg" width="21px" height="auto" style="margin-right: 6%; margin-left: 5px;">Instagram</p>
+        <p style="margin-bottom: 12%;"><img src="/static/images/facebook_icon.svg" width="15px" height="auto" style="margin-right: 8%; margin-left: 7px;">Facebook</p>
+        <p><img src="/static/images/tictok_icon.svg" width="20px" height="auto" style="margin-right: 6%; margin-left: 4px;">Tictok</p>
+    </div>
+    <div class="dashboard-rectangle-side2 container" style="text-align: left;">
+      <div style="margin-left: 3%;">
+        <p style="font-size: 12.5px; color: white; margin-top: 8%; margin-bottom: 6%;">All data</p>
+        <p style="font-size: 9.5px; color: white;"><img src="/static/images/all_data.svg" width="21px" height="auto" style="margin-right: 7%; margin-left: 1%;">All data</p>
+      </div>
+    </div>
+    <div class="therapist-profile-circle" onclick="LinkTherapist()" style="cursor: pointer;">
+      <img src="/static/images/Thearpist_demo.png" width="87px" height="auto" style="margin-left: -4px;">
+      <p style="color: white; font-size: 12px;margin-top: 10%;white-space: nowrap;">Your Therapist</p>
+    </div>
+    <div>
+      <img src="{{ media_dic }}" style="object-fit: none;" class="user-profile-circle">
+      <div class="container user-welcome">
+      <h2>Hi, @{{usr}}!</h2>
+      <p style="color: 6C78B5;">Last updated on 9/18 2022</p>
+    </div>
+    </div>
+    <!-- <div class="container" style="position:absolute; top: 12%;left:42%;z-index:3;width:400px; height: 80px; margin-left: 95px; background-color:grey;display: inline-block;"></div> -->
+    <input type="text" class="search-bar"/>
+    <div style="position:absolute; top: 21px;left: 610px; width: 500px;">
+    <a href="/info" style="text-decoration:none; color: white;"><p style="display:inline; margin-right: 75px">Home</p></a>
+    <a href="/blog" style="text-decoration:none; color: white;"><p style="display:inline; margin-right: 75px">Blogs</p></a>
+    <a href="/about" style="text-decoration:none; color: white;"><p style="display:inline; margin-right: 75px">About</p></a>
+    <a href="/logout" style="text-decoration:none; color: white;"><button style="display:inline; border-radius: 20px;  border: none; outline: none; background-color: #616AC0; color:white; height: 30px; width: 95px;">Log out</button>
+  </div>
+
+  <script>
+    const checkinFunc = () => {
+      window.location = '/view';
+    }
+
+    const LinkTherapist = () => {
+      window.location = '/connect';
+    }
+
+
+    const rout_button = document.getElementById("detail_entries")
+    const DetailsFunc = () => {
+      window.location = '/scoredetail';
+    }
+    query_form = document.getElementById("query_form")
+    query_input = document.getElementById("query_field")
+    const QueryFunc = (e) => {
+      query_input.value = e.value
+      query_form.submit()
+    }
+
+      const ClickLabel = (e) => {
+        window.location = '/labels';
+      }
+
+      var timestamp = {{ labels | safe }}
+      var values = {{ values | safe }}
+      console.log(values)
+      var radar = {{ radar | safe }}
+      var valuesR = {{ values_pie | safe }}
+      var clock_graph = {{ clock_graph | safe }}
+
+      var ctx = document.getElementById("lineChart").getContext("2d");
+      var lineChart = new Chart(ctx,{
+          type: "line",
+          data: {
+            labels: timestamp,
+            datasets: [{
+                data: values,
+                fill: false,
+                borderColor: "rgb(52, 93, 239)",
+                borderWidth: 6,
+                pointRadius: 0,
+                lineTension: 0.25
+              }]
+         },
+        options:{
+          plugins:{
+            legend: {
+        display: false
+                },
+          },
+          scales: {
+                    x:{
+                      grid:{
+                        display:false,
+                        drawBorder: false
+                      },
+                        ticks: {
+                            maxTicksLimit: 6
+                        },
+
+                    },
+                    y: {
+                      grid:{
+                        display:false,
+                      },
+                        ticks: {
+                            maxTicksLimit: 6
+                        }
+                    },
+            },
+        },
+        responsive: true
+      });
+
+      var doughnut = document.getElementById("doughnut").getContext("2d");
+      var DoughnutChart = new Chart(doughnut,{
+          type: "doughnut",
+          data: {
+            labels: ["Anger", "Optimism", "Joy", "Sadness"],
+            datasets: [{
+                label: 'Emotional Snapshot',
+                data: radar,
+                backgroundColor: [
+      '#1C32F9',
+      '#4D74F9',
+      '#434EB4',
+      'rgba(0, 0, 0, 0.2)'
+        ],
+        borderRadius:5,
+        borderWidth:4,
+              }]
+         },
+        options:{
+          plugins:{
+          legend: {
+        display: true,
+        position: 'left',
+        labels: {
+          boxWidth: 15,
+          padding: 6,
+        },},
+        },},
+        responsive: true
+      });
+
+      var bar = document.getElementById("barChart").getContext("2d");
+      var barChart = new Chart(bar,{
+          type: "bar",
+          data: {
+            labels: ["2am","4am","6am","8am","10am","12am","2pm","4pm","6pm","8pm","10pm","12pm"],
+            datasets: [{
+                label: 'Post Frequency Count',
+                data: clock_graph,
+                backgroundColor: [
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8",
+              "#1B59F8"
+        ],
+        barThickness:15,
+        borderRadius:25,
+        borderSkipped: false,
+              }],
+         },
+        options:{         
+          plugins:{
+            legend: {
+        display: false
+                },},
+          scales: {
+            x:{
+              grid:{
+                        display:false,
+                        drawBorder: false
+                      },
+            },
+            y: {
+              grid:{
+                        display:false,
+                      },
+                        ticks: {
+                            maxTicksLimit: 6
+                        },
+                      },
+          },
+        },
+        responsive: true
+      });
+  </script>
+
+    <!-- <h2>Hi, @{{usr}}!</h2>
+    <p class="text-muted">Here is a detailed description of your emotional snapshot. Click <a href="/explained" class = "text-muted style="text-decoration: underline;">here</a> to access the meanings behind the data.</p>
+    <div class="container">
+      <div class="row">
+        <div class="col container">
+      <h4 class="textstyle">Your Emotional Curve:</h4>
+    <div class="container border" style="border-radius: 10px; height: 410px; width: 800px;">
+    <canvas style="padding-bottom: 10px;"id="lineChart"></canvas>
+    <a href="/explained" class = "text-muted" style="text-decoration: underline;">How did we get those results?</a> <a class = "text-muted" style="text-decoration: underline;" href="/update">Update your graph here!</a>
+    </div><br>
+
+    <h4 class="textstyle">Your Emotional Polar Graph:</h4>
+    <div class="container border" style="border-radius: 10px; height: 415px; width: 800px;">
+      <canvas style="padding-bottom: 10px;" id="polarChart"></canvas>
+      <a href="/scoredetail" class = "text-muted" style="text-decoration: underline;">See your detailed emotional details</a>
+      </div>
+      </div>
+
+    <div class="col">
+      <h4 class="title textstyle">Your average Emotion score is: </h4>
+      <div class="container border" style="border-radius: 10px;">
+        <div style="font-size: 100px;">{{EmotionScore}}</div>
+        <div class = "text-muted"> Your risks is: {{risk}} </div>
+        <a href="/quiz" class = "text-muted" style="text-decoration: underline;"> Take a 30-seconds emotional check in</a><br><br>
+      </div><br>
+      <h4 class="textstyle">Analysis of your recent activities:</h4>
+      <div class="container border" style="border-radius: 10px; height: 625px;">
+        <div class="d-flex justify-content-evenly" style="flex-wrap: wrap;">
+          {% for number in numbers %}
+                  <canvas id="lineChart{{number}}" width="200" height="200"></canvas>
+          {% endfor %}
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <script>
+      var timestamp = {{ lables | safe }}
+      var values = {{ values | safe }}
+      var radar = {{ radar | safe }}
+      var valuesR = {{ values_pie | safe }}
+
+      var ctx = document.getElementById("lineChart").getContext("2d");
+      var lineChart = new Chart(ctx,{
+          type: "line",
+          data: {
+            labels: timestamp,
+            datasets: [{
+                label: "Post emotional score",
+                data: values,
+                fill: false,
+                borderColor: "rgb(75, 192, 192)",
+                lineTension: 0.1
+              }]
+         },
+        options:{
+          scales: {
+                    xAxes: [{
+                        ticks: {
+                            maxTicksLimit: 15
+                        }
+                    }]
+            }
+        },
+        responsive: true
+      });
+
+      var polar = document.getElementById("polarChart").getContext("2d");
+      var PolarChart = new Chart(polar,{
+          type: "polarArea",
+          data: {
+            labels: ["Anger", "Optimism", "Joy", "Sadness"],
+            datasets: [{
+                label: 'Emotional Snapshot',
+                data: radar,
+                backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(75, 192, 192)',
+      'rgb(255, 205, 86)',
+      'rgb(54, 162, 235)'
+        ],
+              }]
+         },
+        options:{
+          responsive: true
+        }
+      });
+
+
+for (var i = 0; i < 6; i++) {
+var piectx = document.getElementById(`lineChart${i}`).getContext("2d");
+
+var PieChart = new Chart(piectx,{
+  type: "doughnut",
+  data: {
+    labels: ["Anger", "Joy", "Optimism", "Sadness"],
+    datasets: [{
+        data: valuesR[i],
+        backgroundColor: ["rgb(0, 158, 242)","rgb(255, 208, 47)","rgb(255, 77, 125)","rgb(0, 195, 195)"],
+      }]
+ },
+options:{
+  responsive: false,
+  title: {
+    display: true,
+    text: `Post at ${timestamp[i]}`
+  },
+}
+});}
+
+      </script> -->
+
+{%- for message in get_flashed_messages() %} 
+{{ message }}<br> 
+{%- endfor%}
+</body>
+</html>

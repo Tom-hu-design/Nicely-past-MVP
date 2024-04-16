@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/static/styles/bootstrapmin.min.css" rel="stylesheet"/>
+      <link href="/static/styles/Signup.css" rel="stylesheet">
+      <link rel="icon" href="/static/images/nicely.svg">
+    <title>User Sign-up</title>
+  </head>
+
+    <body style="overflow-y: hidden;">
+
+      <div class="split left" style="overflow-y: hidden;">
+        <img src="/static/images/signup.png" class="signup-image">
+      </div>
+
+      <div class="split right container center">
+      <div class="center">
+        {%- for message in get_flashed_messages() %} <br>{{ message }} {%- endfor
+          %}  
+        </div>
+    <!-- <div class="card" style="width: 32rem; height: 28rem; margin: auto;"> -->
+      <div class="contianer" style="width: 330px; margin-left: 20%; text-align: left;">
+
+    <h3 style="padding-top: 12%;"> Sign up to Nicely. </h3>
+
+    <div class="container" style="position:relative">
+      <div class="profile-circle">
+        <img id="preview" class="img-circle" src="#" style="object-fit: none; display: none;"/>
+      </div> <!--Profile circle -->
+      <img onclick="upload_profile_img()" src="/static/images/profile-camera.png" style="width: 31px; position:absolute; z-index: 2; top: 76%;left: 41%; cursor: pointer;">
+    </input>
+    </div>
+      
+
+        <p style="padding-top: 1%;">I'm a:</p>
+        <div class="d-flex justify-content-between">
+          <div class="rectangle-therapist center" id="user" style="color: white; position: relative;" onclick="clickFunk(this)">
+            <p style="padding-top: 8%; font-size:16px; z-index: 1;">User</p>
+            <img src="/static/images/selection-icon.png" id="user-click" style="z-index: 2; height: 20px; position: absolute; top: 30px; left: 139px;">
+          </div>
+          <div class="rectangle-user center" id="therapist" style="color: white; position: relative;" onclick="clickFunk(this)">
+            <p style="padding-top: 8%; font-size:16px;">Therapist</p>
+            <img src="/static/images/selection-icon.png" id="therapist-click" style="z-index: 2; height: 20px; position: absolute; top: 30px; left: 139px; display: none;">
+          </div>
+        </div>
+
+    <form action="{{request.path}}" method="post" style="padding-top: 3%;" id="signup_form" enctype="multipart/form-data">
+      {{ form.csrf_token }}
+      <!-- <div class="form-group"> -->
+        <!-- <div class="mx-sm-3"> -->
+          {{ form.username.label(class="card-text sr-only") }}:
+          {{ form.username(placeholder="Enter your username here", class="form-control registration-input-box-inactive") }}
+          <div style="color: grey; font-size: small; padding-bottom:2%" id="validation_username">*Username should at least 4 characters without any symbols</div>
+          <!-- </div> -->
+      <!-- <div class="mx-sm-3"> -->
+        {{ form.password.label(class="card-text") }}:
+        {{ form.password(placeholder="Enter your password here", class="form-control registration-input-box-inactive") }}
+
+        {{ form.post_image(id="customFile", style="display:none", accept=".png, .jpg, .jpeg") }}
+        {{ form.account_type(style="display:none", id="account_type") }}
+        <div style="color: grey; font-size: small; padding-bottom:2%" id="validation_password">*Password must be 6 characters contain one or more uppercase character and one or more symbol </div>
+      <!-- </div> -->
+      <!-- <div class="mx-sm-3"> -->
+        {{ form.confirm.label(class="card-text") }}:
+        {{ form.confirm(placeholder="Confirm Password", class="form-control registration-input-box-inactive") }}
+        <div style="color: grey; font-size: small; padding-bottom:4%" id="validation_confirm">*The two passwords must match</div>
+  <!-- </div>   -->
+<!-- </div> -->
+<!-- <div class="center"> -->
+<!-- <label for="accept_rules">I accept the <a href="/site-rules" style="color: black;">site rules</a></label>
+{{ form.accept_rules }} -->
+        <input type="button" value="Submit" class="form-submit-btn" id="submit_btn"/>
+        <!-- <div style="margin-top: 10px;"> -->
+        <!-- </div> -->
+    </form>
+    <div style="margin-top: 2%;">
+      <p>Already a member? <a href="/login" class="link" style="color: #1624A1; text-decoration:none;">Sign in now.</a></p>
+  </div>
+</div>
+  <!-- </div> -->
+
+        <script>
+        imgInp = document.getElementById('customFile')
+        imgPreview = document.getElementById('preview')
+        imgInp.onchange = evt => {
+          const [file] = imgInp.files
+        if (file) {
+          imgPreview.src = URL.createObjectURL(file)
+          imgPreview.style.display = "block"
+          }
+        }
+
+          const upload_profile_img = () =>{
+            imgInp.click()
+          }
+
+          click1 = document.getElementById("user-click")
+          click2 = document.getElementById("therapist-click")
+          button1 = document.getElementById("therapist")
+          button2 = document.getElementById("user")
+          type_input = document.getElementById("account_type")
+          type_input.value = "user"
+
+          const clickFunk = (e) => {
+            if (e.id == "user"){
+              e.style.backgroundColor = "#1624A1";
+              button1.style.backgroundColor = "#9A9A9A";
+              click1.style.display = "inline";
+              click2.style.display = "none";
+              type_input.value = "user"
+            }else if (e.id == "therapist"){
+              e.style.backgroundColor = "#1624A1";
+              button2.style.backgroundColor = "#9A9A9A";
+              click1.style.display = "none";
+              click2.style.display = "inline";
+              type_input.value = "therapist"
+            }
+          }
+
+          const submit_btn = document.getElementById('submit_btn');
+          const submit_form = document.getElementById('signup_form');
+          const username_input = document.getElementById('username');
+          const password_input = document.getElementById('password');
+          const confirm_input = document.getElementById('confirm');
+
+          const validation_username = document.getElementById('validation_username');
+          const validation_password = document.getElementById('validation_password');
+          const validation_confirm = document.getElementById('validation_confirm');
+
+          var val_username = false;
+          var val_password = false;
+          var val_confirm = false;
+
+          const regex = /\W/g;
+          const capital_regex = /[A-Z]/g;
+
+          const username_val = () => {
+            if (username_input.value.length > 3 && (username_input.value.match(regex) == null)){
+            validation_username.style.color = 'green';
+            val_username = true;
+            } else{
+              validation_username.style.color = 'red';
+              val_username = false;
+            }
+          }
+
+          const password_val = () => {
+            if (password_input.value.length > 5 && 
+                (password_input.value.match(regex) !== null) && 
+                !(password_input.value.match(capital_regex) == null)){
+            validation_password.style.color = 'green';
+            val_password = true;
+            } else{
+              validation_password.style.color = 'red';
+              val_password = false;
+          }
+        }
+
+        const confirm_val = () => {
+            if (password_input.value == confirm_input.value && confirm_input.value !== ""){
+              validation_confirm.style.color = 'green';
+              val_confirm = true;
+            } else{
+              validation_confirm.style.color = 'red';
+              val_confirm = false;
+          }
+        }
+          const updateValidation = () => {
+            username_val()
+            password_val()
+            confirm_val()
+            if (val_username == val_password && val_password == val_confirm && val_confirm == true){
+              submit_form.submit()
+            }
+          }
+
+          username_input.addEventListener('keyup', username_val)
+          password_input.addEventListener('keyup', password_val)
+          confirm_input.addEventListener('keyup', confirm_val)
+          submit_btn.addEventListener('click', updateValidation)
+
+        </script>
+</body>
+  
